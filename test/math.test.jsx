@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { add, multiply, subtract, divide } from "../src/utils/math.js";
+import { add, multiply, subtract, divide } from "../src/utils/math";
 
 describe("Math utility functions", () => {
 
