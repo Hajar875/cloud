@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GITHUB_TOKEN = credentials('github-token')
-        REPO = "Mohamed03738jd/TpCloud"
+        REPO = "Hajar875/cloud"
     }
 
     stages {
@@ -16,25 +16,25 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Lint') {
             steps {
-                sh 'npm run lint'
+                bat 'npm run lint'
             }
         }
 
         stage('Run tests') {
             steps {
-                sh 'npm test'
+                bat 'npm test'
             }
         }
 
         stage('Build production') {
             steps {
-                sh 'npm run build'
+                bat 'npm run build'
             }
         }
     }
@@ -44,20 +44,20 @@ pipeline {
         success {
             echo "Build success"
 
-            sh """
-            curl -X POST https://api.github.com/repos/${env.REPO}/statuses/${env.GIT_COMMIT} \
-            -H "Authorization: token ${env.GITHUB_TOKEN}" \
-            -d '{"state":"success","description":"Pipeline succeeded","context":"jenkins-ci"}'
+            bat """
+            curl -X POST https://api.github.com/repos/%REPO%/statuses/%GIT_COMMIT% ^
+            -H "Authorization: token %GITHUB_TOKEN%" ^
+            -d "{\\"state\\":\\"success\\",\\"description\\":\\"Pipeline succeeded\\",\\"context\\":\\"jenkins-ci\\"}"
             """
         }
 
         failure {
             echo "Build failed"
 
-            sh """
-            curl -X POST https://api.github.com/repos/${env.REPO}/statuses/${env.GIT_COMMIT} \
-            -H "Authorization: token ${env.GITHUB_TOKEN}" \
-            -d '{"state":"failure","description":"Pipeline failed","context":"jenkins-ci"}'
+            bat """
+            curl -X POST https://api.github.com/repos/%REPO%/statuses/%GIT_COMMIT% ^
+            -H "Authorization: token %GITHUB_TOKEN%" ^
+            -d "{\\"state\\":\\"failure\\",\\"description\\":\\"Pipeline failed\\",\\"context\\":\\"jenkins-ci\\"}"
             """
         }
     }
